@@ -114,7 +114,7 @@
     var defs = {}
         {{#models}}
         {{#model}}
-            defs.{{name}} = {{{modelJson}}};
+            defs.{{name}} = {{modelJson}};
         {{/model}}
     {{/models}}
   </script>
@@ -136,10 +136,10 @@
             {{#apiInfo}}
               {{#apis}}
                 {{#operations}}
-                  <li class="nav-header" data-group="{{baseName}}"><a href="#api-{{baseName}}">API Methods - {{baseName}}</a></li>
+                  <li class="nav-header" data-group="{{baseName}}"><a href="#api-{{baseName}}">{{baseName}}</a></li>
                   {{#operation}}
                     <li data-group="{{baseName}}" data-name="{{nickname}}" class="">
-                      <a href="#api-{{baseName}}-{{nickname}}">{{nickname}}</a>
+                      <a href="#api-{{baseName}}-{{nickname}}">{{path}}</a>
                     </li>
                   {{/operation}}
                 {{/operations}}
@@ -175,8 +175,7 @@
                     <div id="api-{{baseName}}-{{nickname}}">
                       <article id="api-{{baseName}}-{{nickname}}-0" data-group="User" data-name="{{nickname}}" data-version="0">
                         <div class="pull-left">
-                          <h1>{{nickname}}</h1>
-                          <p>{{summary}}</p>
+                          <h1>{{summary}}</h1>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -190,60 +189,13 @@
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
                           <li class="active"><a href="#examples-{{baseName}}-{{nickname}}-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-java">Java</a></li>
-                          <li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-{{baseName}}-{{nickname}}-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-{{baseName}}-{{nickname}}-0-curl">
                             <pre class="prettyprint"><code class="language-bsh">curl -X {{vendorExtensions.x-codegen-httpMethodUpperCase}}{{#authMethods}}{{#isApiKey}}{{#isKeyInHeader}} -H "{{keyParamName}}: [[apiKey]]"{{/isKeyInHeader}}{{/isApiKey}}{{#isBasic}}{{#hasProduces}} -H "Accept: {{#produces}}{{{mediaType}}}{{#hasMore}},{{/hasMore}}{{/produces}}"{{/hasProduces}}{{#hasConsumes}} -H "Content-Type: {{#consumes}}{{{mediaType}}}{{#hasMore}},{{/hasMore}}{{/consumes}}"{{/hasConsumes}} -H "Authorization: Basic [[basicHash]]"{{/isBasic}}{{/authMethods}} "{{basePath}}{{path}}{{#hasQueryParams}}?{{#queryParams}}{{^-first}}&{{/-first}}{{baseName}}={{vendorExtensions.x-eg}}{{/queryParams}}{{/hasQueryParams}}"</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-java">
-                            <pre class="prettyprint"><code class="language-java">{{>sample_java}}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-android">
-                            <pre class="prettyprint"><code class="language-java">{{>sample_android}}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">{{>sample_objc}}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">{{>sample_js}}</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">{{>sample_csharp}}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-php">
-                              <pre class="prettyprint"><code class="language-php">{{>sample_php}}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">{{>sample_perl}}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-{{baseName}}-{{nickname}}-0-python">
-                              <pre class="prettyprint"><code class="language-python">{{>sample_python}}</code></pre>
-                            </div>
-                          </div>
+                        </div>
 
                           <h2>Parameters</h2>
 
@@ -313,85 +265,26 @@
                           {{/hasQueryParams}}
 
                           <h2>Responses</h2>
-                          {{#responses}}
-                            <h3> Status: {{code}} - {{message}} </h3>
 
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                              {{#schema}}
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-{{nickname}}-{{code}}-schema">Schema</a>
-                                </li>
 
-                                {{#examples}}
-                                  <li class="">
-                                    <a data-toggle="tab" href="#responses-{{nickname}}-{{code}}-example">Response Example</a>
-                                  </li>
-                                {{/examples}}
-                              {{/schema}}
-                              {{#hasHeaders}}
-                                <li class="">
-                                  <a data-toggle="tab" href="#responses-{{nickname}}-{{code}}-headers">Headers</a>
-                                </li>
-                              {{/hasHeaders}}
-                            </ul>
+                          {{#hasExamples}}
+                              {{#examples}}
+                                  <h3 class="field-label">Example data</h3>
+                                  <div class="example-data-content-type">Content-Type: {{{contentType}}}</div>
+                                  <button id="response-toggle-{{path}}" class="response-toggle-button response-close">Response</button><pre class="example" id="example-response-toggle-{{path}}" style="display: none"><code>{{{example}}}</code></pre>
+                              {{/examples}}
+                          {{/hasExamples}}
 
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                              {{#schema}}
-                                <div class="tab-pane active" id="responses-{{nickname}}-{{code}}-schema">
-                                  <div id='responses-{{nickname}}-{{code}}-schema-{{code}}' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {{{jsonSchema}}};
-                                        var schema = schemaWrapper.schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = defs;
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-{{nickname}}-{{code}}-schema-data').val(stringify(schema));
-                                        var result = $('#responses-{{nickname}}-{{code}}-schema-{{code}}');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-{{nickname}}-{{code}}-schema-data' type='hidden' value=''></input>
-                                </div>
-                                {{#examples}}
-                                  <div class="tab-pane" id="responses-{{nickname}}-{{code}}-example">
-                                      <pre class="prettyprint"><code class="json">{{example}}</code></pre>
-                                </div>
-                                {{/examples}}
-                              {{/schema}}
-                              {{#hasHeaders}}
-                                <div class="tab-pane" id="responses-{{nickname}}-{{code}}-headers">
-                                    <table>
-                                        <tr>
-                                            <th width="150px">Name</th>
-                                            <th width="100px">Type</th>
-                                            <th width="100px">Format</th>
-                                            <th>Description</th>
-                                        </tr>
-                                        {{#headers}}
-                                        <tr>
-                                            <td>{{#name}}{{name}}{{/name}}</td>
-                                            <td>{{#datatype}}{{datatype}}{{/datatype}}</td>
-                                            <td>{{#dataFormat}}{{dataFormat}}{{/dataFormat}}</td>
-                                            <td>{{#description}}{{description}}{{/description}}</td>
-                                        </tr>
-                                        {{/headers}}
-                                    </table>
-                                </div>
-                              {{/hasHeaders}}
-                            </div>
-
-                          {{/responses}}
+                          {{#hasProduces}}
+                              <h3 class="field-label">Produces</h3>
+                              This API call produces the following media types according to the <span class="header">Accept</span> request header;
+                              the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+                              <ul>
+                                  {{#produces}}
+                                      <li><code>{{{mediaType}}}</code></li>
+                                  {{/produces}}
+                              </ul>
+                          {{/hasProduces}}
                         </article>
                       </div>
                       <hr>
@@ -444,6 +337,20 @@
   $(document).ready(function () {
     $('.nav-tabs-examples').find('a:first').tab('show');
     $(this).scrollspy({ target: '#scrollingNav', offset: 18 });
+      $('.response-toggle-button').click(function(){
+          var example_name = "example-" + $(this).attr('id');
+          var x= document.getElementById(example_name);
+          if (x.style.display === "none") {
+              x.style.display = "block";
+              $(this).addClass('response-open');
+              $(this).removeClass('response-close');
+          } else {
+              x.style.display = "none";
+              $(this).addClass('response-close');
+              $(this).removeClass('response-open');
+          }
+
+      });
   });
   </script>
 </body>
